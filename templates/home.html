@@ -1,0 +1,11 @@
+<h1>Home page for {{ request.user }}</h1>
+
+<h2>Tasks</h2>
+
+{% for task in tasks %}
+
+    {{ task.title }}
+
+{% endfor %}
+
+<h2>End</h2>
