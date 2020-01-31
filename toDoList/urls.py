@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('new-task/', views.new_task),
 ]

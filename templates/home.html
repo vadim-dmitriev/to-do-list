@@ -1,11 +1,49 @@
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+		crossorigin="anonymous">
+</script>
 <h1>Home page for {{ request.user }}</h1>
 
-<h2>Tasks</h2>
+<h2>My Tasks:</h2>
 
-{% for task in tasks %}
+<ul>
+    {% for task in tasks %}
+    
+        <li>{{ task.title }}</li>
+    
+    {% endfor %}
+</ul>
 
-    {{ task.title }}
+<button id="new-task" onclick="showForm()">New task</button>
 
-{% endfor %}
+<div id="new-task-form">
+    <form method="post" action="/new-task/"> {% csrf_token %}
+        {{ form.title }}
+        <input type="text" name="Title" value="Title" />
+        <input type="text" name="Description" value="Description" />
+        <input type="submit" value="Create" />
+   </form>
+   <button onclick="hideForm()">x</button>
+</div>
 
-<h2>End</h2>
+<script>
+    function showForm() {
+        $("#new-task-form").css("display", "block");        
+    };
+    function hideForm() {
+        $("#new-task-form").css("display", "none");        
+    };
+</script>
+
+<style>
+    #new-task-form {
+        display: none;
+        position: absolute;
+        width: 600px;
+        height: 340px;
+        background-color: grey;
+        z-index:1002;
+        position: relative;
+        margin: 10% auto;
+    }
+</style>

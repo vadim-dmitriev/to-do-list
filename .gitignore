@@ -1,4 +1,4 @@
 *.sqlite3
 .vscode
-toDoList/__pycache__
-toDoList/migrations/__pycache__
+__pycache__/
+*.py[cod]
