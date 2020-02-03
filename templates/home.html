@@ -9,7 +9,13 @@
 <ul>
     {% for task in tasks %}
     
-        <li>{{ task.title }}</li>
+        <li>
+            {{ task.title }}
+            <form method="post" action="/delete-task/"> {% csrf_token %}
+                <input type="hidden" name="taskID" value="{{ task.id }}" />
+                <input type="submit" value="Delete" />
+            </form>
+        </li>
     
     {% endfor %}
 </ul>
@@ -18,7 +24,6 @@
 
 <div id="new-task-form">
     <form method="post" action="/new-task/"> {% csrf_token %}
-        {{ form.title }}
         <input type="text" name="Title" value="Title" />
         <input type="text" name="Description" value="Description" />
         <input type="submit" value="Create" />
