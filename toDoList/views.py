@@ -32,4 +32,22 @@ def delete_task(request: HttpRequest):
 
     task.delete()
 
-    return HttpResponseRedirect('/', content_type='text/html')
+    return redirect('/')
+
+@login_required
+def done_task(request: HttpRequest):
+    task: Task = Task.objects.get(id=request.POST.get("taskID"))
+
+    task.done = True
+    task.save()
+
+    return redirect('/')
+
+@login_required
+def in_progress_task(request: HttpRequest):
+    task: Task = Task.objects.get(id=request.POST.get("taskID"))
+
+    task.done = False
+    task.save()
+
+    return redirect('/')

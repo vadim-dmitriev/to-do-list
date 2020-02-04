@@ -6,19 +6,58 @@
 
 <h2>My Tasks:</h2>
 
+<h3>In Progress</h3>
 <ul>
     {% for task in tasks %}
-    
-        <li>
-            {{ task.title }}
-            <form method="post" action="/delete-task/"> {% csrf_token %}
-                <input type="hidden" name="taskID" value="{{ task.id }}" />
-                <input type="submit" value="Delete" />
-            </form>
-        </li>
+        {% if not task.done %}
+            <li>
+                <div>
+                    {{ task.title }}
+                    {{ task.description }}
+                    {{ task.done }}
+                    <form method="post" action="/delete-task/"> {% csrf_token %}
+                        <input type="hidden" name="taskID" value="{{ task.id }}" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                    <form method="post" action="/done-task/"> {% csrf_token %}
+                        <input type="hidden" name="taskID" value="{{ task.id }}" />
+                        <input type="submit" value="Done!" />
+                    </form>
+                </div>
+            </li>
+        {% endif %}
     
     {% endfor %}
 </ul>
+
+<br><br>
+
+<h3>Done</h3>
+<ul>
+    {% for task in tasks %}
+        {% if task.done %}
+            <li>
+                <div>
+                    {{ task.title }}
+                    {{ task.description }}
+                    {{ task.done }}
+                    <form method="post" action="/delete-task/"> {% csrf_token %}
+                        <input type="hidden" name="taskID" value="{{ task.id }}" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                    <form method="post" action="/in-progress-task/"> {% csrf_token %}
+                        <input type="hidden" name="taskID" value="{{ task.id }}" />
+                        <input type="submit" value="Stil not done!" />
+                    </form>
+                </div>
+            </li>
+        {% endif %}
+    
+    {% endfor %}
+</ul>
+
+<br><br>
+
 
 <button id="new-task" onclick="showForm()">New task</button>
 
