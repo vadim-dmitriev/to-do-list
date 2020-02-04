@@ -25,7 +25,9 @@ SECRET_KEY = '6e*)(sqvlus*f0=0@1pk8=8v-6%jlxpj07_!n@a@$&t3cg8k-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['arcane-ravine-69534.herokuapp.com',
+                 '127.0.0.1',
+                ]
 
 
 # Application definition
