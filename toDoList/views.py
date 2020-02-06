@@ -7,9 +7,7 @@ from .models import Task
 
 @login_required
 def home(request: HttpRequest):
-    u: User = User.objects.get_by_natural_key(request.user)
-    
-    tasks: Task = Task.objects.filter(owner=u.id)
+    tasks: Task = Task.objects.filter(owner=request.user.id)
 
     return render(request, 'home.html', {'tasks': tasks})
 

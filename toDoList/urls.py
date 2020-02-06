@@ -27,4 +27,5 @@ urlpatterns = [
     path('delete-task/', views.delete_task),
     path('done-task/', views.done_task),
     path('in-progress-task/', views.in_progress_task),
+    path('api/', include('api.urls')),
 ]
