@@ -1,0 +1,10 @@
+#new-task-form {
+    display: none;
+    position: absolute;
+    width: 600px;
+    height: 340px;
+    background-color: grey;
+    z-index:1002;
+    position: relative;
+    margin: 10% auto;
+}

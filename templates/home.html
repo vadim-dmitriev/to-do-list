@@ -1,93 +1,82 @@
-<script src="https://code.jquery.com/jquery-3.4.1.js"
-		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-		crossorigin="anonymous">
-</script>
-<h1>Home page for {{ request.user }}</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ToDo</title>
 
-<h2>My Tasks:</h2>
+        {% load static %}
+        <link rel="stylesheet" href='{% static "css/styles.css" %}'>
+        <script src='{% static "js/script.js" %}'></script>
+        <link rel="shortcut icon" href='{% static "images/favicon.ico" %}' type="image/x-icon">
+    </head>
+    <body>
+        <h1>Home page for {{ request.user }}</h1>
+        
+        <h2>My Tasks:</h2>
+        
+        <h3>In Progress</h3>
 
-<h3>In Progress</h3>
-<ul>
-    {% for task in tasks %}
-        {% if not task.done %}
-            <li>
-                <div>
-                    {{ task.title }}
-                    {{ task.description }}
-                    {{ task.done }}
-                    <form method="post" action="/delete-task/"> {% csrf_token %}
-                        <input type="hidden" name="taskID" value="{{ task.id }}" />
-                        <input type="submit" value="Delete" />
-                    </form>
-                    <form method="post" action="/done-task/"> {% csrf_token %}
-                        <input type="hidden" name="taskID" value="{{ task.id }}" />
-                        <input type="submit" value="Done!" />
-                    </form>
-                </div>
-            </li>
-        {% endif %}
+        <ul>
+            {% for task in tasks %}
+                {% if not task.done %}
+                    <li>
+                        <div>
+                            {{ task.title }}
+                            {{ task.description }}
+                            {{ task.done }}
+                            <form method="post" action="/delete-task/"> {% csrf_token %}
+                                <input type="hidden" name="taskID" value="{{ task.id }}" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                            <form method="post" action="/done-task/"> {% csrf_token %}
+                                <input type="hidden" name="taskID" value="{{ task.id }}" />
+                                <input type="submit" value="Done!" />
+                            </form>
+                        </div>
+                    </li>
+                {% endif %}
+            
+            {% endfor %}
+        </ul>
+        
+        <br><br>
+        
+        <h3>Done</h3>
+        <ul>
+            {% for task in tasks %}
+                {% if task.done %}
+                    <li>
+                        <div>
+                            {{ task.title }}
+                            {{ task.description }}
+                            {{ task.done }}
+                            <form method="post" action="/delete-task/"> {% csrf_token %}
+                                <input type="hidden" name="taskID" value="{{ task.id }}" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                            <form method="post" action="/in-progress-task/"> {% csrf_token %}
+                                <input type="hidden" name="taskID" value="{{ task.id }}" />
+                                <input type="submit" value="Stil not done!" />
+                            </form>
+                        </div>
+                    </li>
+                {% endif %}
+            
+            {% endfor %}
+        </ul>
+        
+        <br><br>
+        
+        
+        <button id="new-task" onclick="showForm()">New task</button>
+        
+        <div id="new-task-form">
+            <form method="post" action="/new-task/"> {% csrf_token %}
+                <input type="text" name="Title" value="Title" />
+                <input type="text" name="Description" value="Description" />
+                <input type="submit" value="Create" />
+           </form>
+           <button onclick="hideForm()">x</button>
+        </div>
     
-    {% endfor %}
-</ul>
-
-<br><br>
-
-<h3>Done</h3>
-<ul>
-    {% for task in tasks %}
-        {% if task.done %}
-            <li>
-                <div>
-                    {{ task.title }}
-                    {{ task.description }}
-                    {{ task.done }}
-                    <form method="post" action="/delete-task/"> {% csrf_token %}
-                        <input type="hidden" name="taskID" value="{{ task.id }}" />
-                        <input type="submit" value="Delete" />
-                    </form>
-                    <form method="post" action="/in-progress-task/"> {% csrf_token %}
-                        <input type="hidden" name="taskID" value="{{ task.id }}" />
-                        <input type="submit" value="Stil not done!" />
-                    </form>
-                </div>
-            </li>
-        {% endif %}
-    
-    {% endfor %}
-</ul>
-
-<br><br>
-
-
-<button id="new-task" onclick="showForm()">New task</button>
-
-<div id="new-task-form">
-    <form method="post" action="/new-task/"> {% csrf_token %}
-        <input type="text" name="Title" value="Title" />
-        <input type="text" name="Description" value="Description" />
-        <input type="submit" value="Create" />
-   </form>
-   <button onclick="hideForm()">x</button>
-</div>
-
-<script>
-    function showForm() {
-        $("#new-task-form").css("display", "block");        
-    };
-    function hideForm() {
-        $("#new-task-form").css("display", "none");        
-    };
-</script>
-
-<style>
-    #new-task-form {
-        display: none;
-        position: absolute;
-        width: 600px;
-        height: 340px;
-        background-color: grey;
-        z-index:1002;
-        position: relative;
-        margin: 10% auto;
-    }
-</style>
+    </body>
+</html>
