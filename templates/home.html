@@ -15,7 +15,7 @@
         
         <h3>In Progress</h3>
 
-        <ul>
+        <ul id="doneTasks">
             {% for task in tasks %}
                 {% if not task.done %}
                     <li id="task#{{ task.id }}">
@@ -24,10 +24,7 @@
                             {{ task.description }}
                             {{ task.done }}
                             <button onclick="deleteTask({{ task.id }})">Delete</button>
-                            <form method="post" action="/done-task/"> {% csrf_token %}
-                                <input type="hidden" name="taskID" value="{{ task.id }}" />
-                                <input type="submit" value="Done!" />
-                            </form>
+                            <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Done!</button>
                         </div>
                     </li>
                 {% endif %}
@@ -38,7 +35,7 @@
         <br><br>
         
         <h3>Done</h3>
-        <ul>
+        <ul id="notDoneTasks">
             {% for task in tasks %}
                 {% if task.done %}
                     <li id="task#{{ task.id }}">
@@ -47,10 +44,7 @@
                             {{ task.description }}
                             {{ task.done }}
                             <button onclick="deleteTask({{ task.id }})">Delete</button>
-                            <form method="post" action="/in-progress-task/"> {% csrf_token %}
-                                <input type="hidden" name="taskID" value="{{ task.id }}" />
-                                <input type="submit" value="Stil not done!" />
-                            </form>
+                            <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Stil not done!</button>
                         </div>
                     </li>
                 {% endif %}

@@ -6,6 +6,17 @@ from rest_framework.views import APIView
 from toDoList.models import Task
 from .serializers import TaskSerializer
 
+def get_task(id, user):
+        try:
+            task = Task.objects.get(pk=id)
+
+            if task.owner != user:
+                raise Http404
+        
+            return task
+        except Task.DoesNotExist:
+            raise Http404
+
 class TasksView(APIView):
     def get(self, request):
         tasks = Task.objects.filter(owner=request.user)
@@ -23,24 +34,21 @@ class TasksView(APIView):
         return Response({"success": f"Task '{task_saved.title}' created successfully"})
 
 class TaskView(APIView):
-    def get_task(self, id, user):
-        try:
-            task = Task.objects.get(pk=id)
-
-            if task.owner != user:
-                raise Http404
-        
-            return task
-        except Task.DoesNotExist:
-            raise Http404
-
     def get(self, request: HttpRequest, id):
-        task = self.get_task(id, request.user)
+        task = get_task(id, request.user)
 
         serializer = TaskSerializer(task)
         return Response({"task": serializer.data})
 
     def delete(self, request: HttpRequest, id):
-        task = self.get_task(id, request.user)
+        task = get_task(id, request.user)
         task.delete()
         return Response({"success": f"Task '{task.title}' deleted!"})
+
+class TaskMove(APIView):
+    def post(self, request: HttpRequest, id):
+        task = get_task(id, request.user)
+        task.done = not task.done
+        task.save()
+
+        return Response({"success": f"Task '{task.title}' moved from {not task.done} to {task.done}!"})

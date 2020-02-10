@@ -27,9 +27,26 @@ function deleteTask(id) {
         method: "DELETE",
         headers: { "X-CSRFToken": getCookie('csrftoken') }
     }).then(Response => {
-        console.log(Response.status)
         if (Response.status == 200) {
             document.getElementById("task#"+id).remove()
         };
-    })
+    });
+};
+
+function moveTask(id) {
+    fetch("api/tasks/"+id+"/move/", {
+        method: "POST",
+        headers: { "X-CSRFToken": getCookie('csrftoken') }
+    }).then(Response => {
+        if (Response.status == 200) {
+            var task = document.getElementById("task#"+id);
+            if (task.parentElement.id == "doneTasks") {
+                document.getElementById("notDoneTasks").appendChild(task);
+                document.getElementById("moveBtn#"+id).textContent = "Stil not done!"
+            } else {
+                document.getElementById("doneTasks").appendChild(task);
+                document.getElementById("moveBtn#"+id).textContent = "Done!"
+            }
+        };
+    });
 };
