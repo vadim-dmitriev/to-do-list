@@ -25,14 +25,6 @@ def new_task(request: HttpRequest):
     return redirect('/')
 
 @login_required
-def delete_task(request: HttpRequest):
-    task: Task = Task.objects.get(id=request.POST.get("taskID"))
-
-    task.delete()
-
-    return redirect('/')
-
-@login_required
 def done_task(request: HttpRequest):
     task: Task = Task.objects.get(id=request.POST.get("taskID"))
 

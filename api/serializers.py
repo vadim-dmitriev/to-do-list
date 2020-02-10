@@ -6,7 +6,7 @@ from toDoList.models import Task
 
 
 class TaskSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(read_only=True)
     title = serializers.CharField()
     description = serializers.CharField()
     done = serializers.BooleanField()

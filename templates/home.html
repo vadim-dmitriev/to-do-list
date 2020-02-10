@@ -18,15 +18,12 @@
         <ul>
             {% for task in tasks %}
                 {% if not task.done %}
-                    <li>
+                    <li id="task#{{ task.id }}">
                         <div>
                             {{ task.title }}
                             {{ task.description }}
                             {{ task.done }}
-                            <form method="post" action="/delete-task/"> {% csrf_token %}
-                                <input type="hidden" name="taskID" value="{{ task.id }}" />
-                                <input type="submit" value="Delete" />
-                            </form>
+                            <button onclick="deleteTask({{ task.id }})">Delete</button>
                             <form method="post" action="/done-task/"> {% csrf_token %}
                                 <input type="hidden" name="taskID" value="{{ task.id }}" />
                                 <input type="submit" value="Done!" />
@@ -44,15 +41,12 @@
         <ul>
             {% for task in tasks %}
                 {% if task.done %}
-                    <li>
+                    <li id="task#{{ task.id }}">
                         <div>
                             {{ task.title }}
                             {{ task.description }}
                             {{ task.done }}
-                            <form method="post" action="/delete-task/"> {% csrf_token %}
-                                <input type="hidden" name="taskID" value="{{ task.id }}" />
-                                <input type="submit" value="Delete" />
-                            </form>
+                            <button onclick="deleteTask({{ task.id }})">Delete</button>
                             <form method="post" action="/in-progress-task/"> {% csrf_token %}
                                 <input type="hidden" name="taskID" value="{{ task.id }}" />
                                 <input type="submit" value="Stil not done!" />
