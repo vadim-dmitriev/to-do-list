@@ -22,7 +22,6 @@
                         <div>
                             {{ task.title }}
                             {{ task.description }}
-                            {{ task.done }}
                             <button onclick="deleteTask({{ task.id }})">Delete</button>
                             <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Done!</button>
                         </div>
@@ -42,7 +41,6 @@
                         <div>
                             {{ task.title }}
                             {{ task.description }}
-                            {{ task.done }}
                             <button onclick="deleteTask({{ task.id }})">Delete</button>
                             <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Stil not done!</button>
                         </div>

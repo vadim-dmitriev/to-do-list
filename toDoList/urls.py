@@ -24,7 +24,5 @@ urlpatterns = [
     path('', views.home),
     path('accounts/', include('django.contrib.auth.urls')),
     path('new-task/', views.new_task),
-    path('done-task/', views.done_task),
-    path('in-progress-task/', views.in_progress_task),
     path('api/', include('api.urls')),
 ]
