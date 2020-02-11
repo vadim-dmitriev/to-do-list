@@ -32,7 +32,7 @@ class TasksView(APIView):
         if serializer.is_valid(raise_exception=True):
             task_saved = serializer.save()
         return Response({"success": f"Task '{task_saved.title}' created \
-            successfully"})
+            successfully", "taskID": task_saved.id})
 
 
 class TaskView(APIView):

@@ -30,6 +30,7 @@ DEBUG = True if (os.getenv('DJANGO_DEBUG', 'False') == 'True') else False
 ALLOWED_HOSTS = [
     'arcane-ravine-69534.herokuapp.com',
     '127.0.0.1',
+    '192.168.130.175',
     'localhost',
 ]
 

@@ -15,7 +15,7 @@
         
         <h3>In Progress</h3>
 
-        <ul id="doneTasks">
+        <ul id="notDoneTasks">
             {% for task in tasks %}
                 {% if not task.done %}
                     <li id="task#{{ task.id }}">
@@ -34,7 +34,7 @@
         <br><br>
         
         <h3>Done</h3>
-        <ul id="notDoneTasks">
+        <ul id="doneTasks">
             {% for task in tasks %}
                 {% if task.done %}
                     <li id="task#{{ task.id }}">
@@ -56,12 +56,10 @@
         <button id="new-task" onclick="showForm()">New task</button>
         
         <div id="new-task-form">
-            <form method="post" action="/new-task/"> {% csrf_token %}
-                <input type="text" name="Title" value="Title" />
-                <input type="text" name="Description" value="Description" />
-                <input type="submit" value="Create" />
-           </form>
-           <button onclick="hideForm()">x</button>
+            <input type="text" id="title" placeholder="Title" />
+            <input type="text" id="description" placeholder="Description"/>
+            <button onclick="createTask()">Create</button>
+            <button onclick="hideForm()">x</button>
         </div>
     
     </body>

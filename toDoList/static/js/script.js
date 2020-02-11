@@ -42,11 +42,54 @@ function moveTask(id) {
             var task = document.getElementById("task#"+id);
             if (task.parentElement.id == "doneTasks") {
                 document.getElementById("notDoneTasks").appendChild(task);
-                document.getElementById("moveBtn#"+id).textContent = "Stil not done!"
+                document.getElementById("moveBtn#"+id).textContent = "Done!"
             } else {
                 document.getElementById("doneTasks").appendChild(task);
-                document.getElementById("moveBtn#"+id).textContent = "Done!"
+                document.getElementById("moveBtn#"+id).textContent = "Stil not done!"
             }
         };
+    });
+};
+
+function createTask() {
+    title = document.getElementById("title").value;
+    description = document.getElementById("description").value;
+
+    fetch("api/tasks/", {
+        method: "POST",
+        headers: { "X-CSRFToken": getCookie('csrftoken'), "Content-Type": "application/json" },
+        body: JSON.stringify({
+            "task": {
+                "title": title,
+                "description": description,
+                "done": false,
+            }
+        }),
+    }).then(Response => {
+        if (Response.status == 200) {
+            var li = document.createElement("li");
+            var taskDiv = document.createElement("div");
+            taskDiv.innerHTML = title + " " + description + " ";
+            var deleteTaskBtn = document.createElement("button");
+            deleteTaskBtn.innerHTML = "Delete";
+            
+            var doneTaskBtn = document.createElement("button");
+            doneTaskBtn.innerHTML = "Done!";
+
+            Response.json().then(data => {
+                li.id = "task#" + data.taskID;
+                deleteTaskBtn.setAttribute("onclick", "deleteTask(" + data.taskID + ")");
+                doneTaskBtn.setAttribute("onclick", "moveTask(" + data.taskID + ")");
+                doneTaskBtn.id = "moveBtn#" + data.taskID;
+            });
+
+            taskDiv.appendChild(deleteTaskBtn);
+            taskDiv.appendChild(doneTaskBtn);
+
+
+            li.appendChild(taskDiv);
+            document.getElementById("notDoneTasks").appendChild(li);
+            hideForm();
+        }
     });
 };
