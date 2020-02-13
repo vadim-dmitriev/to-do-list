@@ -4,3 +4,4 @@ __pycache__/
 *.py[cod]
 toDoList/migrations
 api/migrations
+static
