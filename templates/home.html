@@ -3,64 +3,13 @@
     <head>
         <title>ToDo</title>
 
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         {% load static %}
         <link rel="stylesheet" href='{% static "css/styles.css" %}'>
-        <script src='{% static "js/script.js" %}'></script>
+        <script type="module" src='{% static "js/script.js" %}'></script>
         <link rel="shortcut icon" href='{% static "images/favicon.ico" %}' type="image/x-icon">
     </head>
     <body>
-        <h1>Home page for {{ request.user }}</h1>
-        
-        <h2>My Tasks:</h2>
-        
-        <h3>In Progress</h3>
-
-        <ul id="notDoneTasks">
-            {% for task in tasks %}
-                {% if not task.done %}
-                    <li id="task#{{ task.id }}">
-                        <div>
-                            {{ task.title }}
-                            {{ task.description }}
-                            <button onclick="deleteTask({{ task.id }})">Delete</button>
-                            <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Done!</button>
-                        </div>
-                    </li>
-                {% endif %}
-            
-            {% endfor %}
-        </ul>
-        
-        <br><br>
-        
-        <h3>Done</h3>
-        <ul id="doneTasks">
-            {% for task in tasks %}
-                {% if task.done %}
-                    <li id="task#{{ task.id }}">
-                        <div>
-                            {{ task.title }}
-                            {{ task.description }}
-                            <button onclick="deleteTask({{ task.id }})">Delete</button>
-                            <button id="moveBtn#{{ task.id }}" onclick="moveTask({{ task.id }})">Stil not done!</button>
-                        </div>
-                    </li>
-                {% endif %}
-            
-            {% endfor %}
-        </ul>
-        
-        <br><br>
-        
-        
-        <button id="new-task" onclick="showForm()">New task</button>
-        
-        <div id="new-task-form">
-            <input type="text" id="title" placeholder="Title" />
-            <input type="text" id="description" placeholder="Description"/>
-            <button onclick="createTask()">Create</button>
-            <button onclick="hideForm()">x</button>
-        </div>
-    
+        <div id="app"></div>
     </body>
 </html>
