@@ -1,5 +1,4 @@
-#new-task-form {
-    display: none;
+.new-task-form {
     position: absolute;
     width: 600px;
     height: 340px;
@@ -7,4 +6,8 @@
     z-index:1002;
     position: relative;
     margin: 10% auto;
+}
+
+.hidden {
+    display: none;
 }
