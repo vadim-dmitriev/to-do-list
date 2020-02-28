@@ -1,11 +1,60 @@
+* {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.app {
+    margin: 0 auto;
+    width: 55%;
+}
+
+.app > button {
+    border-radius: 25px;
+    display: block;
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+}
+
+.tasks-desk {
+    display: flex;
+    padding: 100px;
+    margin: 0px auto;
+
+}
+
+.tasks-col {
+    width: 50%;
+    height: 20%;
+    min-height: 20%;
+    margin: 0 20px auto;
+}
+
+.task-item {
+    background-color: burlywood;
+    border-radius: 5px 5px 35px 5px ;
+    width: 100%;
+    margin: 20px auto;
+}
+
 .new-task-form {
     position: absolute;
-    width: 600px;
-    height: 340px;
-    background-color: grey;
-    z-index:1002;
-    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 30%;
+    height: 30%;
+    background-color: gainsboro;
+    z-index:1;
     margin: 10% auto;
+    border-radius: 5px 5px 35px 5px;
+    align-content: center;
 }
 
 .hidden {

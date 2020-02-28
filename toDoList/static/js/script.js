@@ -8,13 +8,12 @@ Vue.component('to-do-list-item', {
 		}
 	},
 	template: `
-	<li>
-		<div>
-			{{ task.id }} {{ task.title }} {{ task.description }} {{ task.done }}
-			<button v-on:click="deleteTask(task.id)">Delete</button>
-			<button v-on:click="moveTask(task.id)">{{ moveBtnTitle }}</button>
-		</div>
-	</li>
+	<div class="task-item">
+		<h2>{{ task.title }}</h2>
+		<h4>{{ task.description }}</h4>
+		<button v-on:click="deleteTask(task.id)">Delete</button>
+		<button v-on:click="moveTask(task.id)">{{ moveBtnTitle }}</button>
+	</div>
 	`,
 	methods: {
 		deleteTask: function (id) {
@@ -43,38 +42,28 @@ Vue.component('to-do-list-item', {
 Vue.component('to-do-list', {
 	props: ['tasks'],
 	data: function() {
-		return {
-			isHidden: true,
-			newTaskTitle: "",
-			newTaskDescription: "",
-		}
+		return {}
 	},
 	template: `
-	<div>
-		<h2>In progress</h2>
-		<ul>
+	<div class="tasks-desk">
+
+		<div class="tasks-col">
+			<h1>In progress</h1>
 			<to-do-list-item v-on:delete-task="deleteTask(task.id)"
 							 v-on:new-task="newTask()"
 							 v-for="task in tasks"
 							 v-if="task.done == false"
 							 v-bind:task="task">
 			</to-do-list-item>
-		</ul>
-		<br>
-		<h2>Done</h2>
-		<ul>
+		</div>
+		
+		<div class="tasks-col">
+			<h1>Done</h1>
 			<to-do-list-item v-on:delete-task="deleteTask(task.id)"
 							 v-for="task in tasks"
 							 v-if="task.done == true"
 							 v-bind:task="task">
 			</to-do-list-item>
-		</ul>
-		<button v-on:click="isHidden = !isHidden">New task</button>
-		<div class="new-task-form" v-bind:class="{hidden: isHidden}">
-			<input v-model="newTaskTitle" placeholder="Title"></input>
-			<input v-model="newTaskDescription" placeholder="Description"></input>
-			<button v-on:click="isHidden = !isHidden; newTaskDescription=''; newTaskTitle=''">x</button>
-			<button v-on:click="saveNewTask()">Save</button>
 		</div>
 	</div>
 	`,
@@ -82,6 +71,42 @@ Vue.component('to-do-list', {
 		deleteTask: function (id) {
 			this.tasks.splice(this.tasks.findIndex(task => task.id === id), 1);
 		},
+	}
+});
+
+new Vue({
+	el: "#app",
+	template: `
+	<div class="app">
+		<to-do-list v-bind:tasks="tasks"></to-do-list>
+		<button class="btn" v-on:click="isHidden = !isHidden">+</button>
+		<div class="new-task-form" v-bind:class="{hidden: isHidden}">
+			<input v-model="newTaskTitle" placeholder="Title"></input>
+			<br>
+			<input v-model="newTaskDescription" placeholder="Description"></input>
+			<br>
+			<button v-on:click="isHidden = !isHidden; newTaskDescription=''; newTaskTitle=''">x</button>
+			<button v-on:click="saveNewTask()">Save</button>
+		</div>
+	</div>
+	`,
+	data: {
+		tasks: [],
+		isHidden: true,
+		newTaskTitle: "",
+		newTaskDescription: "",
+	},
+	created: function () {
+		fetch('/api/tasks/', {
+			method: "GET",
+			headers: { "X-CSRFToken": getCookie('csrftoken'), "Content-Type": "application/json" },
+		}).then(Response => {
+			Response.json().then(ResponseObj =>{
+				this.tasks = ResponseObj["tasks"];
+			});
+		})
+	},
+	methods: {
 		saveNewTask: function () {
 			fetch("/api/tasks/", {
 				method: "POST", 
@@ -107,29 +132,6 @@ Vue.component('to-do-list', {
 				};
 			});
 		},
-	},
-});
-
-new Vue({
-	el: "#app",
-	template: `
-	<div>
-		<h1>Hello World</h1>
-		<to-do-list v-bind:tasks="tasks"/>
-	</div>
-	`,
-	data: {
-		tasks: [],
-	},
-	created: function () {
-		fetch('/api/tasks/', {
-			method: "GET",
-			headers: { "X-CSRFToken": getCookie('csrftoken'), "Content-Type": "application/json" },
-		}).then(Response => {
-			Response.json().then(ResponseObj =>{
-				this.tasks = ResponseObj["tasks"];
-			});
-		})
 	},
 });
 
