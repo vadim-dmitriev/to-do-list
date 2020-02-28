@@ -4,7 +4,7 @@ Vue.component('to-do-list-item', {
 	props: ['task'],
 	data: function() {
 		return {
-			listClass: "list",
+			moveBtnTitle: ((this.task.done) ? 'Stil not done!' : 'Done!'),
 		}
 	},
 	template: `
@@ -12,6 +12,7 @@ Vue.component('to-do-list-item', {
 		<div>
 			{{ task.id }} {{ task.title }} {{ task.description }} {{ task.done }}
 			<button v-on:click="deleteTask(task.id)">Delete</button>
+			<button v-on:click="moveTask(task.id)">{{ moveBtnTitle }}</button>
 		</div>
 	</li>
 	`,
@@ -24,6 +25,16 @@ Vue.component('to-do-list-item', {
 				if (Response.status == 200) {
 					this.$emit('delete-task');
 				};
+			});
+		},
+		moveTask: function (id) {
+			fetch("/api/tasks/"+id+"/move/", {
+				method: "POST",
+				headers: { "X-CSRFToken": getCookie('csrftoken'), "Content-Type": "application/json" },
+			}).then(Response => {
+				if (Response.status == 200) {
+					this.task.done = !this.task.done;
+				}
 			});
 		},
 	},
