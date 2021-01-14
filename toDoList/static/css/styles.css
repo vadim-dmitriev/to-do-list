@@ -60,3 +60,12 @@ h1 {
 .hidden {
     display: none;
 }
+
+.login-form {
+    background-color: burlywood;
+    width: 20%;
+    height: 10%;
+    margin: auto;
+    border: 3px solid green;
+    
+}
