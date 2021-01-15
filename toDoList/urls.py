@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.conf import settings
+from django.contrib.auth import logout
 
 from . import views
 
@@ -25,9 +26,9 @@ urlpatterns = [
     path('', views.home),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+
     # auth handlers
     path('auth/', include('django.contrib.auth.urls')),
     path('', include('social_django.urls', namespace='social')),
-    # path('auth/', views.django_logout),
-
+    path('logout/', logout),
 ]
