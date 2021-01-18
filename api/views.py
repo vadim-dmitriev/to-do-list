@@ -31,8 +31,7 @@ class TasksView(APIView):
         serializer = TaskSerializer(data=task)
         if serializer.is_valid(raise_exception=True):
             task_saved = serializer.save()
-        return Response({"success": f"Task '{task_saved.title}' created \
-            successfully", "taskID": task_saved.id})
+        return Response(serializer.data)
 
 
 class TaskView(APIView):
@@ -45,7 +44,7 @@ class TaskView(APIView):
     def delete(self, request: HttpRequest, id):
         task = get_task(id, request.user)
         task.delete()
-        return Response({"success": f"Task '{task.title}' deleted!"})
+        return Response()
 
 
 class TaskMove(APIView):

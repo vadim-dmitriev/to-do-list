@@ -4,15 +4,6 @@
     padding: 0;
 }
 
-h1 {
-    text-align: center;
-}
-
-.app {
-    margin: 0 auto;
-    width: 55%;
-}
-
 .app > button {
     border-radius: 25px;
     display: block;
@@ -21,25 +12,10 @@ h1 {
     height: 50px;
 }
 
-.tasks-desk {
-    display: flex;
-    padding: 100px;
-    margin: 0px auto;
-
-}
-
-.tasks-col {
-    width: 50%;
-    height: 20%;
-    min-height: 20%;
-    margin: 0 20px auto;
-}
-
 .task-item {
     background-color: burlywood;
-    border-radius: 5px 5px 35px 5px ;
-    width: 100%;
-    margin: 20px auto;
+    border-radius: 5px 5px 5px 5px;
+    margin: 10px;
 }
 
 .new-task-form {
@@ -53,7 +29,7 @@ h1 {
     background-color: gainsboro;
     z-index:1;
     margin: 10% auto;
-    border-radius: 5px 5px 35px 5px;
+    border-radius: 5px 5px 5px 5px;
     align-content: center;
 }
 
@@ -68,4 +44,34 @@ h1 {
     -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
     box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
     text-align: center;
+}
+
+.column {
+    border: 1px solid black;
+    min-height: 135px;
+}
+
+.new-task-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 25px;
+    margin: 30px 30px 30px 30px;
+    width: 50px;
+    height: 50px;
+}
+
+
+.drop-zone {
+    background-color: #eee;
+    border: 10 solid black;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.drag-el {
+    background-color: #fff;
+    border: 10 solid black;
+    margin-bottom: 10px;
+    padding: 5px;
 }

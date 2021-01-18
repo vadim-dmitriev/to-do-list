@@ -8,12 +8,12 @@ Vue.component('to-do-list-item', {
 		}
 	},
 	template: `
-	<div class="task-item">
-		<h2>{{ task.title }}</h2>
-		<h4>{{ task.description }}</h4>
-		<button v-on:click="deleteTask(task.id)">Delete</button>
-		<button v-on:click="moveTask(task.id)">{{ moveBtnTitle }}</button>
-	</div>
+		<div class="task-item">
+			<h2>{{ task.title }}</h2>
+			<h4>{{ task.description }}</h4>
+			<button v-on:click="deleteTask(task.id)">Delete</button>
+			<button v-on:click="moveTask(task.id)">{{ moveBtnTitle }}</button>
+		</div>
 	`,
 	methods: {
 		deleteTask: function (id) {
@@ -22,7 +22,7 @@ Vue.component('to-do-list-item', {
 				headers: { "X-CSRFToken": getCookie('csrftoken'), "Content-Type": "application/json" },
 			}).then(Response => {
 				if (Response.status == 200) {
-					this.$emit('delete-task');
+					this.$emit('deleteTask');
 				};
 			});
 		},
@@ -39,54 +39,84 @@ Vue.component('to-do-list-item', {
 	},
 });
 
-Vue.component('to-do-list', {
-	props: ['tasks'],
+Vue.component('column', {
+	props: ['column', 'tasks'],
 	data: function() {
 		return {}
 	},
 	template: `
-	<div class="tasks-desk">
-
-		<div class="tasks-col">
-			<h1>In progress</h1>
-			<to-do-list-item v-on:delete-task="deleteTask(task.id)"
-							 v-on:new-task="newTask()"
-							 v-for="task in tasks"
-							 v-if="task.done == false"
-							 v-bind:task="task">
-			</to-do-list-item>
+		<div>
+			<h1 class="text-center">
+				{{ column.name }}
+			</h1>
+			<hr class="solid" />
+			<div class="column">
+				<to-do-list-item v-for="task in tasks" :task="task" v-on:deleteTask="deleteTask"/>
+			</div>
 		</div>
-		
-		<div class="tasks-col">
-			<h1>Done</h1>
-			<to-do-list-item v-on:delete-task="deleteTask(task.id)"
-							 v-for="task in tasks"
-							 v-if="task.done == true"
-							 v-bind:task="task">
-			</to-do-list-item>
-		</div>
-	</div>
 	`,
 	methods: {
 		deleteTask: function (id) {
-			this.tasks.splice(this.tasks.findIndex(task => task.id === id), 1);
+			this.tasks.splice(this.tasks.findIndex(task => task.id == id), 1);
 		},
+	}
+})
+
+Vue.component('to-do-list', {
+	props: ['tasks'],
+	data: function() {
+		return {
+			columns: [
+				{
+					id: 0,
+					name: "Backlog",
+					status: "b"
+				},
+				{
+					id: 1,
+					name: "In progress",
+					status: "p"
+				},
+				{
+					id: 2,
+					name: "Done",
+					status: "d"
+				},
+			],
+			columnTasks: (column) => this.tasks.filter(task => task.status == column.status)
+		}
+	},
+	template: `
+		<div class="row">
+			<column v-for="column in columns" :tasks="columnTasks(column)" :column="column" class="col-4" />
+		</div>
+	`,
+	methods: {
+		onDrop: function(evt, list) {
+			const taskID = evt.dataTransfer.getData('taskID')
+			const item = this.items.tasks(task => task.id == taskID)
+			item.list = list
+	  	},
 	}
 });
 
 new Vue({
 	el: "#app",
 	template: `
-	<div class="app">
-		<to-do-list v-bind:tasks="tasks"></to-do-list>
-		<button class="btn" v-on:click="isHidden = !isHidden">+</button>
-		<div class="new-task-form" v-bind:class="{hidden: isHidden}">
-			<input v-model="newTaskTitle" placeholder="Title"></input>
-			<br>
-			<input v-model="newTaskDescription" placeholder="Description"></input>
-			<br>
-			<button v-on:click="isHidden = !isHidden; newTaskDescription=''; newTaskTitle=''">x</button>
-			<button v-on:click="saveNewTask()">Save</button>
+	<div class="app container">
+		<div class="mb-4">
+			<to-do-list v-bind:tasks="tasks"></to-do-list>
+		</div>
+		<div class="row">
+			<button class="new-task-btn" v-on:click="isHidden = !isHidden">+</button>
+			<div class="new-task-form" v-bind:class="{hidden: isHidden}">
+				<input v-model="newTaskTitle" placeholder="Title"></input>
+				<br>
+				<input v-model="newTaskDescription" placeholder="Description"></input>
+				<br>
+				<button v-on:click="isHidden = !isHidden; newTaskDescription=''; newTaskTitle=''">x</button>
+				<button v-on:click="saveNewTask()">Save</button>
+			</div>
 		</div>
 	</div>
 	`,
@@ -104,7 +134,7 @@ new Vue({
 			Response.json().then(ResponseObj =>{
 				this.tasks = ResponseObj["tasks"];
 			});
-		})
+		});
 	},
 	methods: {
 		saveNewTask: function () {
@@ -122,10 +152,10 @@ new Vue({
 					this.isHidden = true;
 					Response.json().then(resp => {
 						this.tasks.push({
-							"id": resp.taskID,
-							"title": this.newTaskTitle,
-							"description": this.newTaskDescription,
-							"done": false,
+							"id": resp.id,
+							"title": resp.title,
+							"description": resp.description,
+							"status": resp.status,
 						});
 					});
 				};
