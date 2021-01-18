@@ -115,7 +115,6 @@ new Vue({
 					"task": {
 						"title": this.newTaskTitle,
 						"description": this.newTaskDescription,
-						"done": false,
 					}
 				})
 			}).then(Response => {

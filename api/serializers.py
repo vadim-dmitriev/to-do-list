@@ -8,7 +8,6 @@ class TaskSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField()
     description = serializers.CharField()
-    done = serializers.BooleanField()
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),
                                                write_only=True)
 
